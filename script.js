@@ -1,8 +1,10 @@
-let date1 = new Date();
 let check = 1;
+const timerDisplay = document.querySelector('#time');
+/*const div = document.createElement('div');            That's the division related to the function that doesn't work 
+div.style.cssText = 'color: blue; background: white; font-size: 30px;';     properly, it doesn't show the remaining seconds but only
+timerDisplay.appendChild(div);*/                        //at the beginning and at the end
 
 const cmddivs = document.querySelectorAll('div');
-		
 		cmddivs.forEach((buttondiv) => {
 
             buttondiv.addEventListener('click', (e) => {
@@ -39,25 +41,52 @@ function startTimer() {
     }
 }
 
+/*function updateCount(minutes) {                       I'm still testing this stuff because i have some issues
+    let enddt = addMins(createDateInstance(), minutes); That's why I commented it (It's a bit buggy)
+    let startdt = createDateInstance().getTime();
+    while (enddt>startdt) {
+        updateScreen(enddt, startdt);
+        //sleep(1000);
+        startdt = createDateInstance().getTime();
+    }
+    console.log("Timer Expired");
+}
+function updateScreen(enddt, startdt) {
+    console.log("provola");
+    div.innerHTML = Math.floor((enddt-startdt)/1000) + " Seconds";
+}*/
+
 function resetTimer() {
     check = 1;
 }
 
 function printLocTime() {
+    date1 = createDateInstance();
     console.log("Current Day: "+date1.getFullYear()+"/"+(date1.getUTCMonth()+1)+"/"+date1.getDate()+
                 "\nCurrent Time:"+date1.getHours()+":"+date1.getMinutes());
-    //return date1.getTime();
 }
 
-function addMins(dates, min) {
-    let date2 = new Date(dates.getTime()+(min*60*1000));
-    return date2;
+function addMins(datest, min) {
+    let dateend = new Date(datest.getTime()+(/*min*/min*1000));
+    return dateend;
 }
 
 function printD(date) {
-    printLocTime();
+    date = createDateInstance();
     console.log("Timer end: "+date.getFullYear()+"/"+(date.getUTCMonth()+1)+"/"+date.getDate()+
                 "\n"+date.getHours()+":"+date.getMinutes());
+}
+
+function sleep(delay) { //delay measured in ms
+    let start = createDateInstance().getTime();
+    while (createDateInstance().getTime() < start + delay) {
+
+    }
+}
+
+function createDateInstance() {
+    let dateInstance = new Date();
+    return dateInstance;
 }
 
 //printD(addMins(date1, 10));
