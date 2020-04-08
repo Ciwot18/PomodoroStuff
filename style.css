@@ -1,0 +1,31 @@
+body {
+    background: #bfbfbf;
+}
+
+div {
+    background: #3d3d3d;
+    color: white;
+    align-self: center;
+    margin: auto;
+    text-align: center;
+}
+
+#header-container {
+    height: 125px;
+    width: 600px;
+    background: #bfbfbf;
+    color: #3d3d3d;
+}
+
+#session-break-container {
+    height: 200px;
+    width: 600px;
+}
+
+#timer {
+    height: 400px;
+    width: 600px;
+}
+
+
+/* images for arrows, play, reset, pause, stop */
