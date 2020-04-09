@@ -11,3 +11,10 @@ The second box, under the first, will contain one timer which displays the count
 
 And that's it!
 Enjoy our Pomodoro Clock.
+
+
+
+Update 8 April 2020
+- Added CSS to boxes
+- Found Unicode Characters for up, down, play, reset, pause, and stop
+- Added default values for timers

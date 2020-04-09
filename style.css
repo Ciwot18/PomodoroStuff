@@ -3,29 +3,130 @@ body {
 }
 
 div {
-    background: #3d3d3d;
-    color: white;
     align-self: center;
     margin: auto;
     text-align: center;
+    font-family: "Arial Unicode MS", Arial, sans-serif;
 }
 
 #header-container {
-    height: 125px;
+    margin: 10% auto 30px auto;
+    height: 50px;
     width: 600px;
     background: #bfbfbf;
-    color: #3d3d3d;
+    color: black;
+}
+h1 {
+    font-size: 36pt;
 }
 
 #session-break-container {
-    height: 200px;
-    width: 600px;
+    display: grid;
+    grid-template-areas: 
+        ". session . . break ."
+        "left-down session-default left-up right-down break-default right-up";
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto auto auto auto auto;
+    background-color: black;
+    color: white;
+    height: 150px;
+    width: 500px;
+    margin: 20px auto 20px auto;
+    box-shadow: 5px 10px 8px #4d4d4d;
+    border-radius: 10px;
+}
+
+.up {
+    font-size: 36pt;
+}
+
+.down {
+    font-size: 36pt;
+}
+
+#session {
+    grid-area: session;
+}
+
+#break {
+    grid-area: break;
+}
+
+#left-down {
+    grid-area: left-down;
+}
+
+#session-default {
+    grid-area: session-default;
+}
+
+#left-up {
+    grid-area: left-up;
+}
+
+#right-down {
+    grid-area: right-down;
+}
+
+#break-default {
+    grid-area: break-default;
+}
+
+#right-up {
+    grid-area: right-up;
 }
 
 #timer {
-    height: 400px;
-    width: 600px;
+    display: grid;
+    grid-template-areas: 
+        ". play . reset ."
+        ". . label . ."
+        ". . timer . ."
+        ". pause . stop .";
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto;
+    height: 300px;
+    width: 500px;
+    background-color: black;
+    color: white;
+    margin: 20px auto 20px auto;
+    box-shadow: 5px 10px 8px #4d4d4d;
+    border-radius: 10px;
+}
+
+#play {
+    grid-area: play;
+    font-size: 36pt;
+}
+
+#reset {
+    grid-area: reset;
+    font-size: 36pt;
+}
+
+#title {
+    grid-area: label;
+    font-size: 24pt;
+}
+
+#time {
+    grid-area: timer;
+    font-size: 28pt;
+}
+
+#pause {
+    grid-area: pause;
+    font-size: 36pt;
+}
+
+#stop {
+    grid-area: stop;
+    font-size: 36pt;
+}
+
+.button :hover {
+    color: grey;
 }
 
 
-/* images for arrows, play, reset, pause, stop */
+
