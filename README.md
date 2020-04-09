@@ -29,4 +29,5 @@ Update 9 April 2020
 - Added functions to change the session number;
 - Created a script to change the break time duration based on the actual session;
 - Implemented visual countdown;
+- Automatic start of the break countdown after the activity time (It has to be optimized because it launches multiple countdowns);
 -- Ciro
