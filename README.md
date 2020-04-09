@@ -15,6 +15,17 @@ Enjoy our Pomodoro Clock.
 
 
 Update 8 April 2020
-- Added CSS to boxes
-- Found Unicode Characters for up, down, play, reset, pause, and stop
-- Added default values for timers
+- Added CSS to boxes;
+- Found Unicode Characters for up, down, play, reset, pause, and stop;
+- Added default values for timers.
+--Joel
+- Created a function to get the local data;
+- Added events listeners;
+- Created a sleep function;
+- Created a function to calculate the end of a session or a break.
+-- Ciro
+
+Update 9 April 2020
+- Added functions to change the session number;
+- Created a script to change the break time duration based on the actual session;
+-- Ciro
