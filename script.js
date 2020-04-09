@@ -1,10 +1,8 @@
 let check = 1;
 let sessionn = 1;
+let myVar = null;
 
-const timerView = document.querySelector('#time');
-/*const div = document.createElement('div');            That's the division related to the function that doesn't work 
-div.style.cssText = 'color: blue; background: white; font-size: 30px;';     properly, it doesn't show the remaining seconds but only
-timerView.appendChild(div);*/                        //at the beginning and at the end
+const timerView = document.getElementById('time');
 const sessionView = document.querySelector('#session-default');
 sessionView.textContent = sessionn;
 const breakView = document.querySelector('#break-default');
@@ -16,6 +14,7 @@ const cmddivs = document.querySelectorAll('div');
 			if (buttondiv.id == "play") {
                 console.log(buttondiv.id);
                 startTimer();
+                startCount(20);
             } else if (buttondiv.id == "reset") {
                 console.log(buttondiv.id);
                 resetAll();
@@ -80,23 +79,26 @@ function startTimer() {
     }
 }
 
-/*function updateCount(minutes) {                       I'm still testing this stuff because i have some issues
-    let enddt = addMins(createDateInstance(), minutes); That's why I commented it (It's a bit buggy)
-    let startdt = createDateInstance().getTime();
-    while (enddt>startdt) {
-        updateScreen(enddt, startdt);
-        //sleep(1000);
-        startdt = createDateInstance().getTime();
+function startCount(minutes) {
+    let enddt = addMins(createDateInstance(), minutes).getTime();
+    
+    myVar = setInterval(updateCount, 1000, enddt);
+
+    function updateCount(enddt) {
+        let startdt = createDateInstance().getTime();
+        if (enddt>startdt) {
+            timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + "Minutes and " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " Seconds";
+        } else {
+            timerView.innerHTML = "Time Expired";
+            clearInterval(myVar);
+            check = 1;
+        }
     }
-    console.log("Timer Expired");
 }
-function updateScreen(enddt, startdt) {
-    console.log("provola");
-    div.innerHTML = Math.floor((enddt-startdt)/1000) + " Seconds";
-}*/
 
 function stopTimer() {
     check = 1;
+    clearInterval(myVar);
 }
 
 function printLocTime() {
@@ -106,7 +108,7 @@ function printLocTime() {
 }
 
 function addMins(datest, min) {
-    let dateend = new Date(datest.getTime()+(/*min*/min*1000));
+    let dateend = new Date(datest.getTime()+(min*60*1000));
     return dateend;
 }
 
