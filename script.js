@@ -1,6 +1,7 @@
 let check = 1;
 let sessionn = 1;
 let myVar = null;
+let breakMin = 0;
 
 const timerView = document.getElementById('time');
 const sessionView = document.querySelector('#session-default');
@@ -14,7 +15,6 @@ const cmddivs = document.querySelectorAll('div');
 			if (buttondiv.id == "play") {
                 console.log(buttondiv.id);
                 startTimer();
-                startCount(20);
             } else if (buttondiv.id == "reset") {
                 console.log(buttondiv.id);
                 resetAll();
@@ -43,9 +43,49 @@ const cmddivs = document.querySelectorAll('div');
 function breakTime() {
     if (sessionn%5==0 && sessionn!=0) {
         breakView.textContent = "20:00";
+        breakMin = 20;
     } else {
         breakView.textContent = "5:00";
+        breakMin = 5;
     }
+}
+
+function startTimer() {
+    if (check == 0) {
+        alert("You need to stop first!");
+    } if (check == 1) {
+    check = 0;
+    startCount(25);
+    }
+}
+
+function startCount(minutes) {
+    let enddt = addMins(createDateInstance(), minutes).getTime();
+    myVar = setInterval(updateCount, 1000, enddt);
+}
+
+function startBreak(minutes) {
+    let enddt = addMins(createDateInstance(), minutes).getTime();
+    myVar = setInterval(updateCount, 1000, enddt);
+}
+
+function updateCount(enddt) {
+    let startdt = createDateInstance().getTime();
+    if (enddt>startdt) {
+        timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + "Minutes and " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " Seconds";
+    } else {
+        timerView.innerHTML = "Time Expired";
+        clearInterval(myVar);
+        check = 1;
+        breakTime();
+        startBreak(breakMin);
+        sessionUp();
+    }
+}
+
+function stopTimer() {
+    check = 1;
+    clearInterval(myVar);
 }
 
 function resetAll() {
@@ -53,6 +93,7 @@ function resetAll() {
     check = 1;
     sessionView.textContent = sessionn;
     breakTime();
+    stopTimer()
 }
 
 function sessionUp() {
@@ -71,36 +112,6 @@ function sessionDown() {
     }
 }
 
-function startTimer() {
-    if (check == 0) {
-        alert("You need to stop first!");
-    } if (check == 1) {
-    check = 0;
-    }
-}
-
-function startCount(minutes) {
-    let enddt = addMins(createDateInstance(), minutes).getTime();
-    
-    myVar = setInterval(updateCount, 1000, enddt);
-
-    function updateCount(enddt) {
-        let startdt = createDateInstance().getTime();
-        if (enddt>startdt) {
-            timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + "Minutes and " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " Seconds";
-        } else {
-            timerView.innerHTML = "Time Expired";
-            clearInterval(myVar);
-            check = 1;
-        }
-    }
-}
-
-function stopTimer() {
-    check = 1;
-    clearInterval(myVar);
-}
-
 function printLocTime() {
     date1 = createDateInstance();
     console.log("Current Day: "+date1.getFullYear()+"/"+(date1.getUTCMonth()+1)+"/"+date1.getDate()+
@@ -108,7 +119,7 @@ function printLocTime() {
 }
 
 function addMins(datest, min) {
-    let dateend = new Date(datest.getTime()+(min*60*1000));
+    let dateend = new Date(datest.getTime()+(/*min*/min*1000));
     return dateend;
 }
 
