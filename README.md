@@ -28,4 +28,5 @@ Update 8 April 2020
 Update 9 April 2020
 - Added functions to change the session number;
 - Created a script to change the break time duration based on the actual session;
+- Implemented visual countdown;
 -- Ciro
