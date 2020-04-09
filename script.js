@@ -1,8 +1,13 @@
 let check = 1;
-const timerDisplay = document.querySelector('#time');
+let sessionn = 1;
+
+const timerView = document.querySelector('#time');
 /*const div = document.createElement('div');            That's the division related to the function that doesn't work 
 div.style.cssText = 'color: blue; background: white; font-size: 30px;';     properly, it doesn't show the remaining seconds but only
-timerDisplay.appendChild(div);*/                        //at the beginning and at the end
+timerView.appendChild(div);*/                        //at the beginning and at the end
+const sessionView = document.querySelector('#session-default');
+sessionView.textContent = sessionn;
+const breakView = document.querySelector('#break-default');
 
 const cmddivs = document.querySelectorAll('div');
 		cmddivs.forEach((buttondiv) => {
@@ -13,25 +18,59 @@ const cmddivs = document.querySelectorAll('div');
                 startTimer();
             } else if (buttondiv.id == "reset") {
                 console.log(buttondiv.id);
-                resetTimer();
+                resetAll();
 			} else if (buttondiv.id == "pause") {
                 console.log(buttondiv.id);
 			} else if (buttondiv.id == "stop") {
-				console.log(buttondiv.id);
+                console.log(buttondiv.id);
+                stopTimer();
 			} else if (buttondiv.id == "right-up") {
 				console.log(buttondiv.id);
 			} else if (buttondiv.id == "right-down") {
-				console.log(buttondiv.id);
+                console.log(buttondiv.id);
 			} else if (buttondiv.id == "left-up") {
-				console.log(buttondiv.id);
+                console.log(buttondiv.id);
+                sessionUp();
 			} else if (buttondiv.id == "left-down") {
-				console.log(buttondiv.id);
+                console.log(buttondiv.id);
+                sessionDown();
 			} else {
-                console.log("Other stuff");
+                //console.log("Other stuff");
             }
 			
 		  });
         });
+
+function breakTime() {
+    if (sessionn%5==0 && sessionn!=0) {
+        breakView.textContent = "20:00";
+    } else {
+        breakView.textContent = "5:00";
+    }
+}
+
+function resetAll() {
+    sessionn = 0;
+    check = 1;
+    sessionView.textContent = sessionn;
+    breakTime();
+}
+
+function sessionUp() {
+    sessionn++;
+    sessionView.textContent = sessionn;
+    breakTime();
+}
+
+function sessionDown() {
+    if (sessionn>1) {
+        sessionn--;
+        sessionView.textContent = sessionn;
+        breakTime();
+    } else {
+        alert("The session number cannot be negative");
+    }
+}
 
 function startTimer() {
     if (check == 0) {
@@ -56,7 +95,7 @@ function updateScreen(enddt, startdt) {
     div.innerHTML = Math.floor((enddt-startdt)/1000) + " Seconds";
 }*/
 
-function resetTimer() {
+function stopTimer() {
     check = 1;
 }
 
@@ -88,6 +127,3 @@ function createDateInstance() {
     let dateInstance = new Date();
     return dateInstance;
 }
-
-//printD(addMins(date1, 10));
-//I made a little system to see how to set a timer
