@@ -59,6 +59,8 @@ function startTimer() {
     }
 }
 
+let repeat = setInterval();
+
 function startCount(minutes) {
     let enddt = addMins(createDateInstance(), minutes).getTime();
     myVar = setInterval(updateCount, 1000, enddt);
