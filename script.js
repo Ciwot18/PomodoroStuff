@@ -2,9 +2,12 @@ let check = true;
 let sessionn = 1;
 let myVar = null;
 let breakMin = 0;
+let breakAddMin = 0;
+let breakLessMin = 0;
 let remainingTime = 0;
 
 const timerView = document.getElementById('time');
+const titleView = document.getElementById('title');
 const sessionView = document.querySelector('#session-default');
 sessionView.textContent = sessionn;
 const breakView = document.querySelector('#break-default');
@@ -40,19 +43,9 @@ const cmddivs = document.querySelectorAll('div');
 			} else {
                 //console.log("Other stuff");
             }
-			
-		  });
-        });
+		});
+    });
 
-function breakTime() {
-    if (sessionn%5==0 && sessionn!=0) {
-        breakView.textContent = "20:00";
-        breakMin = 20;
-    } else {
-        breakView.textContent = "5:00";
-        breakMin = 5;
-    }
-}
 
 function startTimer() {
     if (check == false) {
@@ -63,62 +56,90 @@ function startTimer() {
     }
 }
 
-// let repeat = setInterval();
-
 function startCount(minutes) {
     if (remainingTime != 0) {
         remainingTime /= 60000;
         let enddt = addMins(createDateInstance(), remainingTime).getTime();
-        myVar = setInterval(updateCount, 1000, enddt);
+        myVar = setInterval(updateCount, 800, enddt);
     } else {
         let enddt = addMins(createDateInstance(), minutes).getTime();
-        myVar = setInterval(updateCount, 1000, enddt);
+        myVar = setInterval(updateCount, 800, enddt);
     }
 }
 
 function startBreak(minutes) {
     let enddt = addMins(createDateInstance(), minutes).getTime();
-    myVar = setInterval(updateCount, 1000, enddt);
+    myVar = setInterval(updatePause, 800, enddt);
 }
 
 function updateCount(enddt) {
+    titleView.innerHTML = "Session";
     let startdt = createDateInstance().getTime();
     if (enddt>startdt) {
         remainingTime = enddt-startdt;
-        if ((enddt-startdt)<60000) {
-            timerView.innerHTML =  Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
+        if (remainingTime<60000) {
+            timerView.innerHTML =  Math.floor((remainingTime%(1000*60))/1000) + " sec";
         } else {
-            timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + " min, " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
+            timerView.innerHTML =  Math.floor(remainingTime/1000/60) + " min, " +Math.floor((remainingTime%(1000*60))/1000) + " sec";
         }
-        
     } else {
         remainingTime = 0;
-        timerView.innerHTML = "Time Expired";
         clearInterval(myVar);
-        check = true;
         breakTime();
-        startBreak(breakMin);
+        startBreak(breakMin);     
+    }
+}
+
+function updatePause(enddt) {
+    titleView.innerHTML = "Break Time";
+    let startdt = createDateInstance().getTime();
+    if (enddt>startdt) {
+        remainingTime = enddt-startdt;
+        if (remainingTime<60000) {
+            timerView.innerHTML =  Math.floor((remainingTime%(1000*60))/1000) + " sec";
+        } else {
+            timerView.innerHTML =  Math.floor(remainingTime/1000/60) + " min, " +Math.floor((remainingTime%(1000*60))/1000) + " sec";
+        }
+    } else {
+        remainingTime = 0;
+        clearInterval(myVar);
+        startCount(25);
         sessionUp();
+        breakTime();
     }
 }
 
 function stopTimer() {
     check = true;
-    remainingTime = 0;
     clearInterval(myVar);
+    if (remainingTime<60000) {
+        timerView.innerHTML =  Math.floor((remainingTime%(1000*60))/1000) + " sec<br>Time Stopped, press<br>Play to restart";
+    } else {
+        timerView.innerHTML =  Math.floor(remainingTime/1000/60) + " min, " +
+                            Math.floor((remainingTime%(1000*60))/1000) + " sec<br>Time Stopped, press<br>Play to restart";
+    }
+    remainingTime = 0;
 }
 
 function pauseTimer() {
     check = true;
     clearInterval(myVar);
+    if (remainingTime<60000) {
+        timerView.innerHTML =  Math.floor((remainingTime%(1000*60))/1000) + " sec<br>Time Paused";
+    } else {
+        timerView.innerHTML =  Math.floor(remainingTime/1000/60) + " min, " +
+                            Math.floor((remainingTime%(1000*60))/1000) + " sec<br>Time Paused";
+    }
 }
 
 function resetAll() {
     sessionn = 1;
     check = true;
     sessionView.textContent = sessionn;
+    timerView.innerHTML = "25:00";
     breakTime();
-    stopTimer()
+    remainingTime = 0;
+    clearInterval(myVar);
 }
 
 function sessionUp() {
@@ -137,6 +158,16 @@ function sessionDown() {
     }
 }
 
+function breakTime() {
+    if (sessionn%5==0 && sessionn!=0) {
+        breakMin = 20+breakAddMin-breakLessMin;
+        breakView.textContent = breakMin+":00";
+    } else {
+        breakMin = 5+breakAddMin-breakLessMin;
+        breakView.textContent = breakMin+":00";
+    }
+}
+
 function printLocTime() {
     date1 = createDateInstance();
     console.log("Current Day: "+date1.getFullYear()+"/"+(date1.getUTCMonth()+1)+"/"+date1.getDate()+
@@ -146,12 +177,6 @@ function printLocTime() {
 function addMins(datest, min) {
     let dateend = new Date(datest.getTime()+(min*60*1000));
     return dateend;
-}
-
-function printD(date) {
-    date = createDateInstance();
-    console.log("Timer end: "+date.getFullYear()+"/"+(date.getUTCMonth()+1)+"/"+date.getDate()+
-                "\n"+date.getHours()+":"+date.getMinutes());
 }
 
 function sleep(delay) { //delay measured in ms
@@ -166,25 +191,15 @@ function createDateInstance() {
     return dateInstance;
 }
 
-//functions for increasing/decreasing the break duration
-//but after looking through things more, I don't think we need them.
- function breakTimeUp() {
-     let time = document.getElementById('break-time').textContent;
-     time = time.substring(0, time.indexOf(":"));
-     time++;
-     breakMin++;
-     let updatedTime = document.getElementById('break-time');
-     updatedTime.innerHTML = time+":00";
+function breakTimeUp() {
+     breakAddMin++;
+     breakTime();
  }
 
  function breakTimeDown() {
-     let time = document.getElementById('break-time').textContent;
-     time = time.substring(0, time.indexOf(":"));
-     if (time > 1) {
-         time--;
-         breakMin--;
-         let updatedTime = document.getElementById('break-time');
-         updatedTime.innerHTML = time+":00";
+     if (breakMin > 1) {
+         breakLessMin--;
+         breakTime();
      } else {
          alert("Time must be a positive number");
      }
