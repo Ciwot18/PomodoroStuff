@@ -1,7 +1,8 @@
-let check = 1;
+let check = true;
 let sessionn = 1;
 let myVar = null;
 let breakMin = 0;
+let remainingTime = 0;
 
 const timerView = document.getElementById('time');
 const sessionView = document.querySelector('#session-default');
@@ -19,6 +20,7 @@ const cmddivs = document.querySelectorAll('div');
                 console.log(buttondiv.id);
                 resetAll();
 			} else if (buttondiv.id == "pause") {
+                pauseTimer();
                 console.log(buttondiv.id);
 			} else if (buttondiv.id == "stop") {
                 console.log(buttondiv.id);
@@ -31,10 +33,10 @@ const cmddivs = document.querySelectorAll('div');
                 console.log(buttondiv.id);
 			} else if (buttondiv.id == "left-up") {
                 console.log(buttondiv.id);
-                // sessionUp();
+                sessionUp();
 			} else if (buttondiv.id == "left-down") {
                 console.log(buttondiv.id);
-                // sessionDown();
+                sessionDown();
 			} else {
                 //console.log("Other stuff");
             }
@@ -53,10 +55,10 @@ function breakTime() {
 }
 
 function startTimer() {
-    if (check == 0) {
+    if (check == false) {
         alert("You need to stop first!");
-    } if (check == 1) {
-    check = 0;
+    } if (check == true) {
+    check = false;
     startCount(25);
     }
 }
@@ -64,8 +66,14 @@ function startTimer() {
 // let repeat = setInterval();
 
 function startCount(minutes) {
-    let enddt = addMins(createDateInstance(), minutes).getTime();
-    myVar = setInterval(updateCount, 1000, enddt);
+    if (remainingTime != 0) {
+        remainingTime /= 60000;
+        let enddt = addMins(createDateInstance(), remainingTime).getTime();
+        myVar = setInterval(updateCount, 1000, enddt);
+    } else {
+        let enddt = addMins(createDateInstance(), minutes).getTime();
+        myVar = setInterval(updateCount, 1000, enddt);
+    }
 }
 
 function startBreak(minutes) {
@@ -76,11 +84,18 @@ function startBreak(minutes) {
 function updateCount(enddt) {
     let startdt = createDateInstance().getTime();
     if (enddt>startdt) {
-        timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + " min, " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
+        remainingTime = enddt-startdt;
+        if ((enddt-startdt)<60000) {
+            timerView.innerHTML =  Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
+        } else {
+            timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + " min, " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
+        }
+        
     } else {
+        remainingTime = 0;
         timerView.innerHTML = "Time Expired";
         clearInterval(myVar);
-        check = 1;
+        check = true;
         breakTime();
         startBreak(breakMin);
         sessionUp();
@@ -88,13 +103,19 @@ function updateCount(enddt) {
 }
 
 function stopTimer() {
-    check = 1;
+    check = true;
+    remainingTime = 0;
+    clearInterval(myVar);
+}
+
+function pauseTimer() {
+    check = true;
     clearInterval(myVar);
 }
 
 function resetAll() {
-    sessionn = 0;
-    check = 1;
+    sessionn = 1;
+    check = true;
     sessionView.textContent = sessionn;
     breakTime();
     stopTimer()
@@ -123,7 +144,7 @@ function printLocTime() {
 }
 
 function addMins(datest, min) {
-    let dateend = new Date(datest.getTime()+(/*min*/min*1000));
+    let dateend = new Date(datest.getTime()+(min*60*1000));
     return dateend;
 }
 
@@ -147,20 +168,24 @@ function createDateInstance() {
 
 //functions for increasing/decreasing the break duration
 //but after looking through things more, I don't think we need them.
-// function breakTimeUp() {
-//     let time = document.getElementById('break-time').textContent;
-//     time++;
-//     let updatedTime = document.getElementById('break-time');
-//     updatedTime.innerHTML = time;
-// }
+ function breakTimeUp() {
+     let time = document.getElementById('break-time').textContent;
+     time = time.substring(0, time.indexOf(":"));
+     time++;
+     breakMin++;
+     let updatedTime = document.getElementById('break-time');
+     updatedTime.innerHTML = time+":00";
+ }
 
-// function breakTimeDown() {
-//     let time = document.getElementById('break-time').textContent;
-//     if (time > 1) {
-//         time--;
-//         let updatedTime = document.getElementById('break-time');
-//         updatedTime.innerHTML = time;
-//     } else {
-//         alert("Time must be a positive number");
-//     }
-// }
+ function breakTimeDown() {
+     let time = document.getElementById('break-time').textContent;
+     time = time.substring(0, time.indexOf(":"));
+     if (time > 1) {
+         time--;
+         breakMin--;
+         let updatedTime = document.getElementById('break-time');
+         updatedTime.innerHTML = time+":00";
+     } else {
+         alert("Time must be a positive number");
+     }
+ }
