@@ -24,15 +24,17 @@ const cmddivs = document.querySelectorAll('div');
                 console.log(buttondiv.id);
                 stopTimer();
 			} else if (buttondiv.id == "right-up") {
+                breakTimeUp()
 				console.log(buttondiv.id);
 			} else if (buttondiv.id == "right-down") {
+                breakTimeDown()
                 console.log(buttondiv.id);
 			} else if (buttondiv.id == "left-up") {
                 console.log(buttondiv.id);
-                sessionUp();
+                // sessionUp();
 			} else if (buttondiv.id == "left-down") {
                 console.log(buttondiv.id);
-                sessionDown();
+                // sessionDown();
 			} else {
                 //console.log("Other stuff");
             }
@@ -59,7 +61,7 @@ function startTimer() {
     }
 }
 
-let repeat = setInterval();
+// let repeat = setInterval();
 
 function startCount(minutes) {
     let enddt = addMins(createDateInstance(), minutes).getTime();
@@ -74,7 +76,7 @@ function startBreak(minutes) {
 function updateCount(enddt) {
     let startdt = createDateInstance().getTime();
     if (enddt>startdt) {
-        timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + "Minutes and " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " Seconds";
+        timerView.innerHTML =  Math.floor((enddt-startdt)/1000/60) + " min, " +Math.floor(((enddt-startdt)%(1000*60))/1000) + " sec";
     } else {
         timerView.innerHTML = "Time Expired";
         clearInterval(myVar);
@@ -142,3 +144,23 @@ function createDateInstance() {
     let dateInstance = new Date();
     return dateInstance;
 }
+
+//functions for increasing/decreasing the break duration
+//but after looking through things more, I don't think we need them.
+// function breakTimeUp() {
+//     let time = document.getElementById('break-time').textContent;
+//     time++;
+//     let updatedTime = document.getElementById('break-time');
+//     updatedTime.innerHTML = time;
+// }
+
+// function breakTimeDown() {
+//     let time = document.getElementById('break-time').textContent;
+//     if (time > 1) {
+//         time--;
+//         let updatedTime = document.getElementById('break-time');
+//         updatedTime.innerHTML = time;
+//     } else {
+//         alert("Time must be a positive number");
+//     }
+// }
