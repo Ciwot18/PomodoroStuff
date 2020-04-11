@@ -31,3 +31,7 @@ Update 9 April 2020
 - Implemented visual countdown;
 - Automatic start of the break countdown after the activity time (It has to be optimized because it launches multiple countdowns);
 -- Ciro
+
+Update 10 April 2020
+- Updated CSS to make countdown smaller;
+- Updated wording in countdown to be more concise.
