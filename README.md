@@ -35,3 +35,11 @@ Update 9 April 2020
 Update 10 April 2020
 - Updated CSS to make countdown smaller;
 - Updated wording in countdown to be more concise.
+-- Joel
+
+Update 11 April 2020
+- Fixed the problem with multiple timers starting in the same moment;
+- Fixed the problem with the +Break and -Break buttons;
+- Implemented pause function;
+- Adjusted little features to make it look nicer.
+-- Ciro
