@@ -198,7 +198,7 @@ function breakTimeUp() {
 
  function breakTimeDown() {
      if (breakMin > 1) {
-         breakLessMin--;
+         breakLessMin++;
          breakTime();
      } else {
          alert("Time must be a positive number");
